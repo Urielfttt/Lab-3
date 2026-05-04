@@ -1,3 +1,5 @@
+
+
 import pandas as pd
 import streamlit as st
 
@@ -16,6 +18,7 @@ def cargar_datos():
     gym.columns = gym.columns.str.strip()
     steam.columns = steam.columns.str.strip()
     netflix.columns = netflix.columns.str.strip()
+<<<<<<< HEAD
 
 
     netflix["duration_num"] = netflix["duration"].astype(str).str.extract(r'(\d+)')
@@ -38,6 +41,31 @@ opcion = st.sidebar.selectbox("Sección", [
 if opcion == "Exploración":
     st.header("Exploración")
 
+=======
+
+    # limpiar duración Netflix
+    netflix["duration_num"] = netflix["duration"].astype(str).str.extract(r'(\d+)')
+    netflix["duration_num"] = pd.to_numeric(netflix["duration_num"], errors='coerce')
+
+    return ev, gym, steam, netflix
+
+ev, gym, steam, netflix = cargar_datos()
+
+
+opcion = st.sidebar.selectbox("Sección", [
+    "Exploración",
+    "Ingreso",
+    "Filtros",
+    "Categorías",
+    "Análisis",
+    "Preguntas",
+    "Guardar"
+])
+
+if opcion == "Exploración":
+    st.header("Exploración")
+
+>>>>>>> d8a78adde008e9270c02c00c3c9f6ab333fa8aaa
     for nombre, df in zip(
         ["Vehículos", "Gym", "Steam", "Netflix"],
         [ev, gym, steam, netflix]
@@ -46,6 +74,7 @@ if opcion == "Exploración":
         st.write("Dimensiones:", df.shape)
         st.write("Columnas:", df.columns.tolist())
         st.dataframe(df.head(6))
+<<<<<<< HEAD
         st.write(df.describe())
 
 if opcion == "Ingreso":
@@ -150,3 +179,6 @@ if opcion == "Categorías":
     st.write(gym["NivelFrecuencia"].value_counts())
     st.write(steam["GamaJuego"].value_counts())
     st.write(netflix["TipoAudiencia"].value_counts())
+=======
+        st.write(df.describe())
+>>>>>>> d8a78adde008e9270c02c00c3c9f6ab333fa8aaa
