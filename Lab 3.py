@@ -143,6 +143,10 @@ def categorias(datos):
 
         df["TipoAudiencia"] = df["rating"].apply(audiencia)
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 07345092765091b519a3ada15f8bc534e47dcea7
     return datos
 
 def analisis(datos):
@@ -215,6 +219,7 @@ def guardar(datos):
         datos["netflix"].to_csv("netflix_titles_Actualizado.csv", index=False)
 
     print("\nArchivos guardados correctamente")
+<<<<<<< HEAD
 
     def ejecutar_sistema():
 
@@ -256,3 +261,8 @@ def guardar(datos):
             activo = False
         else:
             print("Opción inválida")
+=======
+=======
+    return datos
+>>>>>>> e51f2984b02ad1531b757590c9dcf80b0e39e502
+>>>>>>> 07345092765091b519a3ada15f8bc534e47dcea7
