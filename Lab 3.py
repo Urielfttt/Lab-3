@@ -144,3 +144,115 @@ def categorias(datos):
         df["TipoAudiencia"] = df["rating"].apply(audiencia)
 
     return datos
+
+def analisis(datos):
+
+    def grafico(df, col, titulo):
+        df[col].value_counts().plot(kind="bar")
+        plt.title(titulo)
+        plt.xlabel("Categoría")
+        plt.ylabel("Cantidad")
+        plt.show()
+
+    print("\n--- CONTEOS ---")
+
+    if "ev" in datos:
+        print(datos["ev"]["RangoCategoria"].value_counts())
+        grafico(datos["ev"], "RangoCategoria", "Vehículos")
+
+    if "gym" in datos:
+        print(datos["gym"]["NivelFrecuencia"].value_counts())
+        grafico(datos["gym"], "NivelFrecuencia", "Gym")
+
+    if "steam" in datos and "GamaJuego" in datos["steam"]:
+        print(datos["steam"]["GamaJuego"].value_counts())
+        grafico(datos["steam"], "GamaJuego", "Steam")
+
+    if "netflix" in datos:
+        print(datos["netflix"]["TipoAudiencia"].value_counts())
+        grafico(datos["netflix"], "TipoAudiencia", "Netflix")
+
+    print("\n--- AGRUPACIONES ---")
+
+    if "ev" in datos:
+        print(datos["ev"].groupby("RangoCategoria").agg({
+            "Base MSRP": "mean",
+            "Model Year": "mean",
+            "Electric Range": "std"
+        }))
+
+    if "gym" in datos:
+        print(datos["gym"].groupby("NivelFrecuencia").agg({
+            "Session_Duration": "mean",
+            "Experience_Level": "mean",
+            "BMI": "std"
+        }))
+
+    if "steam" in datos and "GamaJuego" in datos["steam"]:
+        print(datos["steam"].groupby("GamaJuego").agg({
+            "price": ["mean", "std"],
+            "discount_percent": "mean"
+        }))
+
+    if "netflix" in datos:
+        print(datos["netflix"].groupby("TipoAudiencia").agg({
+            "duration_num": "mean",
+            "type": lambda x: x.mode()[0]
+        }))
+
+def guardar(datos):
+
+    if "ev" in datos:
+        datos["ev"].to_csv("Electric_Vehicle_Population_Actualizado.csv", index=False)
+
+    if "gym" in datos:
+        datos["gym"].to_csv("GymExerciseTracking_Actualizado.csv", index=False)
+
+    if "steam" in datos:
+        datos["steam"].to_csv("steam_store_data_2024_Actualizado.csv", index=False)
+
+    if "netflix" in datos:
+        datos["netflix"].to_csv("netflix_titles_Actualizado.csv", index=False)
+
+    print("\nArchivos guardados correctamente")
+
+    def ejecutar_sistema():
+
+    datos = cargar_datos()
+
+    if len(datos) == 0:
+        print("No hay datos.")
+        return
+
+    datos = limpiar(datos)
+
+    activo = True
+
+    while activo:
+        print("\n===== MENU =====")
+        print("1. Exploración")
+        print("2. Ingreso de datos")
+        print("3. Filtros")
+        print("4. Crear categorías")
+        print("5. Análisis completo")
+        print("6. Guardar")
+        print("7. Salir")
+
+        op = input("Seleccione: ")
+
+        if op == "1":
+            explorar(datos)
+        elif op == "2":
+            datos = ingreso(datos)
+        elif op == "3":
+            filtros(datos)
+        elif op == "4":
+            datos = categorias(datos)
+        elif op == "5":
+            analisis(datos)
+        elif op == "6":
+            guardar(datos)
+        elif op == "7":
+            activo = False
+        else:
+            print("Opción inválida")
